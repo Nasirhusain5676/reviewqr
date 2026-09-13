@@ -1,0 +1,1391 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ReviewQR Pro</title>
+
+
+    <!-- QR CODE LIBRARY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- CARD DOWNLOAD LIBRARY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+
+        /* HEADER */
+
+        header {
+            background: white;
+            padding: 18px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            border-bottom: 1px solid #ddd;
+        }
+
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+
+        .tag {
+            background: #eaf1ff;
+            color: #2563eb;
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        /* MAIN */
+
+        .container {
+            max-width: 1100px;
+
+            margin: 35px auto;
+
+            padding: 20px;
+        }
+
+
+        .hero {
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .hero h1 {
+            font-size: 38px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .hero p {
+            color: #666;
+
+            font-size: 17px;
+        }
+
+
+        /* MAIN GRID */
+
+        .main {
+            display: grid;
+
+            grid-template-columns: 420px 1fr;
+
+            gap: 25px;
+        }
+
+
+        /* BOX */
+
+        .box {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+
+        /* INPUT */
+
+        label {
+            display: block;
+
+            margin-top: 15px;
+
+            margin-bottom: 7px;
+
+            font-weight: bold;
+        }
+
+
+        input,
+        textarea,
+        select {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #d9dee8;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+        }
+
+
+        textarea {
+            resize: vertical;
+        }
+
+
+        /* BUTTON */
+
+        button {
+
+            width: 100%;
+
+            padding: 14px;
+
+            margin-top: 15px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .generate {
+
+            background: #2563eb;
+
+            color: white;
+        }
+
+
+        .download {
+
+            background: #eaf1ff;
+
+            color: #2563eb;
+        }
+
+
+        .buy {
+
+            background: #16a34a;
+
+            color: white;
+
+            font-size: 16px;
+        }
+
+
+        /* PRICE */
+
+        .priceBox {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            background: #effcf3;
+
+            border: 1px solid #bbf7d0;
+
+            border-radius: 15px;
+        }
+
+
+        .price {
+
+            font-size: 36px;
+
+            font-weight: bold;
+
+            color: #16a34a;
+
+            margin: 10px;
+        }
+
+
+        .launch {
+
+            color: #666;
+
+            font-size: 12px;
+        }
+
+
+        /* PREVIEW */
+
+        .preview {
+
+            min-height: 550px;
+
+            background: #f7f9fd;
+
+            border-radius: 15px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 25px;
+        }
+
+
+        /* REVIEW CARD */
+
+        .review-card {
+
+            width: 360px;
+
+            min-height: 470px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 28px;
+
+            text-align: center;
+
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+
+            border-top: 8px solid #2563eb;
+        }
+
+
+        .review-card.dark {
+
+            background: #151a24;
+
+            color: white;
+        }
+
+
+        .review-card.minimal {
+
+            border: 2px solid #2563eb;
+
+            border-top: 2px solid #2563eb;
+        }
+
+
+        /* LOGO */
+
+        #logoPreview {
+
+            width: 65px;
+
+            height: 65px;
+
+            object-fit: contain;
+
+            display: none;
+
+            margin: auto;
+
+            margin-bottom: 10px;
+        }
+
+
+        /* STARS */
+
+        .stars {
+
+            font-size: 25px;
+
+            margin-bottom: 12px;
+        }
+
+
+        /* BADGE */
+
+        .badge {
+
+            display: inline-block;
+
+            background: #eaf1ff;
+
+            color: #2563eb;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            margin-bottom: 10px;
+        }
+
+
+        .review-card h2 {
+
+            font-size: 25px;
+
+            margin: 8px 0;
+        }
+
+
+        .review-card p {
+
+            color: #667085;
+
+            margin-bottom: 18px;
+        }
+
+
+        .review-card.dark p {
+
+            color: #d1d5db;
+        }
+
+
+        /* QR */
+
+        #qrcode {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin: 15px;
+        }
+
+
+        #qrcode img {
+
+            width: 210px !important;
+
+            height: 210px !important;
+        }
+
+
+        .small {
+
+            font-size: 12px;
+
+            color: #8993a4;
+
+            margin-top: 12px;
+        }
+
+
+        /* INFO */
+
+        .info {
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            background: #fff8df;
+
+            border: 1px solid #f0dfa3;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        #status {
+
+            font-size: 13px;
+
+            margin-top: 12px;
+
+            color: #2563eb;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+
+            text-align: center;
+
+            color: #8993a4;
+
+            padding: 30px;
+
+            font-size: 13px;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 850px) {
+
+            .main {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .hero h1 {
+
+                font-size: 30px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<header>
+
+    <div class="logo">
+
+        ReviewQR Pro
+
+    </div>
+
+
+    <div class="tag">
+
+        Google Review QR
+
+    </div>
+
+</header>
+
+
+
+<div class="container">
+
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <h1>
+
+            Get More Customer Reviews ⭐
+
+        </h1>
+
+
+        <p>
+
+            Create a professional Google Review QR card.
+
+        </p>
+
+    </div>
+
+
+
+    <div class="main">
+
+
+        <!-- LEFT -->
+
+        <div class="box">
+
+
+            <h2>
+
+                Create Your QR
+
+            </h2>
+
+
+            <!-- BUSINESS NAME -->
+
+            <label>
+
+                Business Name
+
+            </label>
+
+
+            <input
+
+                type="text"
+
+                id="businessName"
+
+                placeholder="Example: Ali Mobile Store"
+
+            >
+
+
+
+            <!-- REVIEW LINK -->
+
+            <label>
+
+                Google Review Link
+
+            </label>
+
+
+            <input
+
+                type="text"
+
+                id="reviewLink"
+
+                placeholder="Paste shopkeeper's Google Review link"
+
+            >
+
+
+            <div class="info">
+
+                Shopkeeper ke Google Business Profile se
+
+                <b>review link</b> copy karke yahan paste karo.
+
+            </div>
+
+
+
+            <!-- LOGO -->
+
+            <label>
+
+                Business Logo
+
+            </label>
+
+
+            <input
+
+                type="file"
+
+                id="logo"
+
+                accept="image/*"
+
+            >
+
+
+
+            <!-- MESSAGE -->
+
+            <label>
+
+                Review Message
+
+            </label>
+
+
+            <textarea
+
+                id="message"
+
+                rows="2"
+
+            >Scan & leave us a review</textarea>
+
+
+
+            <!-- DESIGN -->
+
+            <label>
+
+                Card Design
+
+            </label>
+
+
+            <select id="design">
+
+                <option value="modern">
+
+                    Modern
+
+                </option>
+
+
+                <option value="minimal">
+
+                    Minimal
+
+                </option>
+
+
+                <option value="dark">
+
+                    Dark
+
+                </option>
+
+            </select>
+
+
+
+            <!-- COLOR -->
+
+            <label>
+
+                Card Color
+
+            </label>
+
+
+            <input
+
+                type="color"
+
+                id="color"
+
+                value="#2563eb"
+
+            >
+
+
+
+            <!-- GENERATE -->
+
+            <button
+
+                class="generate"
+
+                onclick="generateQR()"
+
+            >
+
+                Generate QR Code
+
+            </button>
+
+
+
+            <!-- DOWNLOAD -->
+
+            <button
+
+                class="download"
+
+                onclick="downloadCard()"
+
+            >
+
+                Download QR Card
+
+            </button>
+
+
+
+            <!-- PRICE -->
+
+            <div class="priceBox">
+
+
+                <h3>
+
+                    Professional QR Card
+
+                </h3>
+
+
+                <p>
+
+                    QR + Business Name + Logo + Professional Design
+
+                </p>
+
+
+                <div class="price">
+
+                    ₹149
+
+                </div>
+
+
+                <button
+
+                    class="buy"
+
+                    onclick="buyNow()"
+
+                >
+
+                    Buy Now – ₹149
+
+                </button>
+
+
+                <div class="launch">
+
+                    Launch Price
+
+                </div>
+
+
+            </div>
+
+
+            <div id="status"></div>
+
+
+        </div>
+
+
+
+        <!-- RIGHT -->
+
+        <div class="box">
+
+
+            <h2>
+
+                Live Preview
+
+            </h2>
+
+
+            <div class="preview">
+
+
+                <div
+
+                    id="reviewCard"
+
+                    class="review-card"
+
+                >
+
+
+                    <!-- LOGO -->
+
+                    <img
+
+                        id="logoPreview"
+
+                    >
+
+
+
+                    <!-- STARS -->
+
+                    <div class="stars">
+
+                        ⭐⭐⭐⭐⭐
+
+                    </div>
+
+
+
+                    <!-- BADGE -->
+
+                    <div class="badge">
+
+                        YOUR FEEDBACK MATTERS
+
+                    </div>
+
+
+
+                    <!-- NAME -->
+
+                    <h2 id="namePreview">
+
+                        Your Business
+
+                    </h2>
+
+
+
+                    <!-- MESSAGE -->
+
+                    <p id="messagePreview">
+
+                        Scan & leave us a review
+
+                    </p>
+
+
+
+                    <!-- QR -->
+
+                    <div id="qrcode">
+
+                        <span>
+
+                            QR code will appear here
+
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="small">
+
+                        Thank you for supporting our business ❤️
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<footer>
+
+    ReviewQR Pro © 2026
+
+</footer>
+
+
+
+<script>
+
+
+/* QR VARIABLE */
+
+let qr = null;
+
+
+
+/* LOGO UPLOAD */
+
+document
+
+.getElementById("logo")
+
+.addEventListener(
+
+    "change",
+
+    function(event) {
+
+
+        const file =
+
+            event.target.files[0];
+
+
+        if (!file) {
+
+            return;
+
+        }
+
+
+        const reader =
+
+            new FileReader();
+
+
+        reader.onload =
+
+            function() {
+
+
+                document
+
+                .getElementById("logoPreview")
+
+                .src = reader.result;
+
+
+                document
+
+                .getElementById("logoPreview")
+
+                .style.display = "block";
+
+
+            };
+
+
+        reader.readAsDataURL(file);
+
+    }
+
+);
+
+
+
+/* GENERATE QR */
+
+function generateQR() {
+
+
+    const businessName =
+
+        document
+
+        .getElementById("businessName")
+
+        .value
+
+        .trim();
+
+
+    const reviewLink =
+
+        document
+
+        .getElementById("reviewLink")
+
+        .value
+
+        .trim();
+
+
+    const message =
+
+        document
+
+        .getElementById("message")
+
+        .value
+
+        .trim();
+
+
+
+    /* CHECK BUSINESS */
+
+    if (businessName === "") {
+
+        alert("Please enter Business Name.");
+
+        return;
+
+    }
+
+
+
+    /* CHECK LINK */
+
+    if (reviewLink === "") {
+
+        alert("Please paste Google Review Link.");
+
+        return;
+
+    }
+
+
+
+    /* CHECK URL */
+
+    try {
+
+        new URL(reviewLink);
+
+    }
+
+    catch {
+
+        alert("Please enter a valid Google Review Link.");
+
+        return;
+
+    }
+
+
+
+    /* NAME */
+
+    document
+
+    .getElementById("namePreview")
+
+    .innerText = businessName;
+
+
+
+    /* MESSAGE */
+
+    document
+
+    .getElementById("messagePreview")
+
+    .innerText =
+
+        message ||
+
+        "Scan & leave us a review";
+
+
+
+    /* DESIGN */
+
+    const card =
+
+        document.getElementById("reviewCard");
+
+
+    const design =
+
+        document.getElementById("design").value;
+
+
+    const color =
+
+        document.getElementById("color").value;
+
+
+    card.className =
+
+        "review-card " + design;
+
+
+    card.style.borderTop =
+
+        "8px solid " + color;
+
+
+
+    /* REMOVE OLD QR */
+
+    document
+
+    .getElementById("qrcode")
+
+    .innerHTML = "";
+
+
+
+    /* CREATE QR */
+
+    qr = new QRCode(
+
+        document.getElementById("qrcode"),
+
+        {
+
+            text: reviewLink,
+
+            width: 210,
+
+            height: 210,
+
+            correctLevel:
+
+                QRCode.CorrectLevel.H
+
+        }
+
+    );
+
+
+
+    document
+
+    .getElementById("status")
+
+    .innerText =
+
+        "✅ QR generated successfully!";
+
+}
+
+
+
+/* DOWNLOAD CARD */
+
+function downloadCard() {
+
+
+    if (qr === null) {
+
+        alert("First generate the QR code.");
+
+        return;
+
+    }
+
+
+    html2canvas(
+
+        document.getElementById("reviewCard"),
+
+        {
+
+            scale: 3,
+
+            useCORS: true
+
+        }
+
+    )
+
+    .then(
+
+        function(canvas) {
+
+
+            const link =
+
+                document.createElement("a");
+
+
+            const businessName =
+
+                document
+
+                .getElementById("businessName")
+
+                .value
+
+                .trim();
+
+
+            link.download =
+
+                (businessName || "Business")
+
+                + "-Review-QR.png";
+
+
+            link.href =
+
+                canvas.toDataURL("image/png");
+
+
+            link.click();
+
+
+            document
+
+            .getElementById("status")
+
+            .innerText =
+
+                "✅ Card downloaded!";
+
+        }
+
+    );
+
+}
+
+
+
+/* BUY NOW */
+
+function buyNow() {
+
+
+    const businessName =
+
+        document
+
+        .getElementById("businessName")
+
+        .value
+
+        .trim();
+
+
+    if (businessName === "") {
+
+        alert("Please enter Business Name first.");
+
+        return;
+
+    }
+
+
+    alert(
+
+        "Order for " +
+
+        businessName +
+
+        " is ready.\\n\\nPrice: ₹149\\n\\nPayment gateway will be connected next."
+
+    );
+
+}
+
+
+
+/* DESIGN CHANGE */
+
+document
+
+.getElementById("design")
+
+.addEventListener(
+
+    "change",
+
+    function() {
+
+
+        const card =
+
+            document.getElementById("reviewCard");
+
+
+        const design =
+
+            document.getElementById("design").value;
+
+
+        const color =
+
+            document.getElementById("color").value;
+
+
+        card.className =
+
+            "review-card " + design;
+
+
+        card.style.borderTop =
+
+            "8px solid " + color;
+
+    }
+
+);
+
+
+
+/* COLOR CHANGE */
+
+document
+
+.getElementById("color")
+
+.addEventListener(
+
+    "input",
+
+    function() {
+
+
+        const card =
+
+            document.getElementById("reviewCard");
+
+
+        card.style.borderTop =
+
+            "8px solid " +
+
+            this.value;
+
+    }
+
+);
+
+
+
+/* LIVE NAME */
+
+document
+
+.getElementById("businessName")
+
+.addEventListener(
+
+    "input",
+
+    function() {
+
+
+        document
+
+        .getElementById("namePreview")
+
+        .innerText =
+
+            this.value ||
+
+            "Your Business";
+
+    }
+
+);
+
+
+
+/* LIVE MESSAGE */
+
+document
+
+.getElementById("message")
+
+.addEventListener(
+
+    "input",
+
+    function() {
+
+
+        document
+
+        .getElementById("messagePreview")
+
+        .innerText =
+
+            this.value ||
+
+            "Scan & leave us a review";
+
+    }
+
+);
+
+
+</script>
+
+
+</body>
+
+</html>
+```
